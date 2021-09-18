@@ -66,7 +66,7 @@ def drawGraph(results, ax1, union=False):
         ax2 = ax1.twinx()
         ax2.set_ylabel('$(I_{DS})^{1/2} (A^{1/2})$', color='b')
         ax2.tick_params(axis='y', which='both', colors='b', direction='in')
-        ax2.ticklabel_format(axis='y', scilimits=[0, 0])
+        ax2.ticklabel_format(axis='y',style='sci', scilimits=[0, 0], useMathText=True)
         ax2.spines['right'].set_color('b')
         ax2.plot(GateV, np.sqrt(abs(DrainI)), 'b')
         ax2.plot(
@@ -93,7 +93,7 @@ def drawGraph(results, ax1, union=False):
             transform=ax2.transAxes,
         )  # max mobility
         ax2.text(
-            0.5, 0.7, 'VT=%.2f V' % VT, ha='left', va='center', transform=ax2.transAxes
+            0.5, 0.7, 'VT=%.2f $V$' % VT, ha='left', va='center', transform=ax2.transAxes
         )  # VT
 
     return ax1
