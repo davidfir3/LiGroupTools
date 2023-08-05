@@ -100,17 +100,16 @@ def drawGraph(results, ax1, union=False):
 
 
 if __name__ == '__main__':
-    FIGSIZE = [10, 10]  # 设置图标尺寸
-    fig = plt.figure(figsize=FIGSIZE)
-    ax = fig.subplots()
-
+    OUTFILE = 'results.csv'
     files = [
         file
         for file in os.listdir('.')
-        if file.endswith('.xls') or file.endswith('.csv')
+        if file.endswith('.xls') or file.endswith('.csv') and file != OUTFILE
     ]
     outputs = []
 
+    FIGSIZE = [10, 10]  # 设置图标尺寸
+    fig, ax = plt.subplots(figsize=FIGSIZE)
     for file in files:
         # 读取.csv/.xls文件数据
         if file.endswith('.xls'):
@@ -124,17 +123,19 @@ if __name__ == '__main__':
         # 不同器件的转移特性曲线画在同一个图
         drawGraph(results, ax, union=True)
         # 单独画图
-        fig_i = plt.figure(figsize=FIGSIZE)
-        drawGraph(results, fig_i.subplots())
+        fig_i, ax_i = plt.subplots(figsize=FIGSIZE)
+        drawGraph(results, ax_i)
         fig_i.savefig('%s.png' % file.split('.')[0])
 
     fig.savefig('union.png')
     array = np.array(outputs)
+    array = np.hstack((np.asarray(files).reshape((-1, 1)), outputs), dtype=object)
     np.savetxt(
-        'results.csv',
+        OUTFILE,
         array,
         delimiter=',',
         comments='',
-        header='mobility,Vgmax,VT,slope,ONOFF,Ion,Ioff, ',
+        header='filename,mobility,Vgmax,VT,slope,ONOFF,Ion,Ioff',
+        fmt=['%s','%.4e','%.4e','%.4e','%.4e','%.4e','%.4e','%.4e']
     )
     # plt.show()
