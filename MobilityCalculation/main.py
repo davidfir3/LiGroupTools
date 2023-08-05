@@ -125,7 +125,7 @@ if __name__ == '__main__':
         # 单独画图
         fig_i, ax_i = plt.subplots(figsize=FIGSIZE)
         drawGraph(results, ax_i)
-        fig_i.savefig('%s.png' % file.split('.')[0])
+        fig_i.savefig('%s.png' % file[:-4])
 
     fig.savefig('union.png')
     array = np.array(outputs)
