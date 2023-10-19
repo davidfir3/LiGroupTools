@@ -28,6 +28,7 @@ def calCoverage(img0, blockSize=51, display=True):
     # 转化成灰度图
     gray = cv.cvtColor(img0, cv.COLOR_BGR2GRAY)
     h, w = gray.shape[:2]
+    print('长宽比：%.2f' % (h/w))
     size = h * w
     # 二值化
     bin = gray.copy()
@@ -61,7 +62,7 @@ def calCoverage(img0, blockSize=51, display=True):
 
 
 if __name__ == '__main__':
-    img = plt.imread(input('文件名：'))
+    img = cv.imread(input('文件名：'))
     while True:
         plt.imshow(img)
         print('选取计算区域的左上角和右下角')
