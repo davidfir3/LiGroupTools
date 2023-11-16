@@ -100,11 +100,14 @@ def drawGraph(results, ax1, union=False):
 
 
 if __name__ == '__main__':
-    OUTFILE = 'results.csv'
+    wdir = input('文件夹：').strip('\"')
+    os.chdir(wdir)
+    OUTFILE = '../results' + os.path.basename(os.getcwd()) + '.csv'
     files = [
         file
         for file in os.listdir('.')
-        if file.endswith('.xls') or file.endswith('.csv') and file != OUTFILE
+        # 根据条件筛选待计算文件
+        if file.endswith('.xls') or file.endswith('.csv') and 'ID-VG' in file and '\'' not in file
     ]
     outputs = []
 
@@ -118,7 +121,7 @@ if __name__ == '__main__':
         if file.endswith('.csv'):
             data = pd.read_csv(file, skiprows=258, usecols=[1, 2])
             GateV, DrainI = data[' VG'].to_numpy(), data[' ID'].to_numpy()
-        results = calMobility(GateV, DrainI)
+        results = calMobility(GateV[:91], DrainI[:91], W=500.0, L=100.0)
         outputs.append(results[1:])
         # 不同器件的转移特性曲线画在同一个图
         drawGraph(results, ax, union=True)
