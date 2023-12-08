@@ -57,7 +57,7 @@ def drawGraph(results, ax1, union=False):
     # 画Vg-Ids图
     ax1.set_xlabel('$V_g (V)$')
     ax1.set_yscale('log')
-    ax1.set_ylabel('|$I_{DS}$| ($\mu$A)')
+    ax1.set_ylabel('|$I_{DS}$| (A)')
     ax1.tick_params(axis='y', which='both', colors='k', direction='in')
     ax1.plot(GateV, abs(DrainI), 'k')
 
@@ -107,7 +107,7 @@ if __name__ == '__main__':
         file
         for file in os.listdir('.')
         # 根据条件筛选待计算文件
-        if file.endswith('.xls') or file.endswith('.csv') and 'ID-VG' in file and '\'' not in file
+        if file.endswith('.xls') or file.endswith('.csv') and 'ID-VG' in file# and '\'' not in file
     ]
     outputs = []
 
