@@ -26,6 +26,8 @@ def calMobility(GateV, DrainI, W=1000.0, L=50.0, Cd=10.0, **kwargs):
     '''
 
     DrainI = abs(DrainI)
+    if GateV[0] == GateV[-1]:
+        GateV, DrainI = GateV[:int(len(GateV)/2)], DrainI[:int(len(GateV)/2)]
     slopes = np.zeros([2, len(GateV) - 15])
 
     # select 15 points after i to calculate gradient at i
@@ -77,23 +79,23 @@ def drawGraph(results, ax1, union=False):
         ax2.set_ylim(0)
         # 显示结果
         ax2.text(
-            0.5,
-            0.9,
-            '$I_{on}/I_{off}$:%.2E' % ONOFF,
+            0.65,
+            0.95,
+            '$I_{on}/I_{off}$:%.2e' % ONOFF,
             ha='left',
             va='center',
             transform=ax2.transAxes,
         )  # Ion/Ioff
         ax2.text(
-            0.5,
-            0.8,
-            '$\mu$=%.2E $cm^2V^{-1}s^{-1}$' % mobility,
+            0.65,
+            0.85,
+            '$\mu$=%.3g $cm^2V^{-1}s^{-1}$' % mobility,
             ha='left',
             va='center',
             transform=ax2.transAxes,
         )  # max mobility
         ax2.text(
-            0.5, 0.7, 'VT=%.2f $V$' % VT, ha='left', va='center', transform=ax2.transAxes
+            0.65, 0.75, 'VT=%.2f $V$' % VT, ha='left', va='center', transform=ax2.transAxes
         )  # VT
 
     return ax1
@@ -111,7 +113,7 @@ if __name__ == '__main__':
     ]
     outputs = []
 
-    FIGSIZE = [10, 10]  # 设置图标尺寸
+    FIGSIZE = [6, 6]  # 设置图标尺寸
     fig, ax = plt.subplots(figsize=FIGSIZE)
     for file in files:
         # 读取.csv/.xls文件数据
@@ -121,7 +123,7 @@ if __name__ == '__main__':
         if file.endswith('.csv'):
             data = pd.read_csv(file, skiprows=258, usecols=[1, 2])
             GateV, DrainI = data[' VG'].to_numpy(), data[' ID'].to_numpy()
-        results = calMobility(GateV[:91], DrainI[:91], W=500.0, L=100.0)
+        results = calMobility(GateV, DrainI, W=500.0, L=100.0)
         outputs.append(results[1:])
         # 不同器件的转移特性曲线画在同一个图
         drawGraph(results, ax, union=True)
